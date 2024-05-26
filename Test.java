@@ -21,7 +21,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 //test data
-public class Test extends JFrame{
+public class Test {
 
 	private List<Route> routes = new ArrayList <Route> ();
 
@@ -29,214 +29,7 @@ public class Test extends JFrame{
 	 * create GUI
 	 */
 	public Test() {
-		setTitle("武汉地铁模拟系统");
-		Container c = getContentPane();
-		c.setLayout(new GridLayout(7, 1));
-		JPanel p1 = new JPanel();
-		JPanel p2= new JPanel();
-		JPanel p3 = new JPanel();
-		JPanel p4 = new JPanel();
-		JPanel p5 = new JPanel();
-		JPanel p6 = new JPanel();
-		JPanel p7 = new JPanel();
-		JLabel tl1 = new JLabel("输入站点，返回经过该站点的所有线路");
-		JLabel tl2 = new JLabel("输入线路和方向，返回该线路中所有站点的顺序列表");
-		JLabel tl3 = new JLabel("输入起点站和终点站，返回最短路径");
-		JButton tr1 = new JButton("确定");
-		JButton tr2 = new JButton("确定");
-		JButton tr3 = new JButton("确定");
-		JButton t4 = new JButton("打印路径至标准输出");
-		JButton t5 = new JButton("计算路径对应的乘车费用(普通单程票)");
-		JButton t6 = new JButton("计算使用武汉通的乘客的票价");
-		JButton t7 = new JButton("计算使用日票的乘客的票价");
-		JTextField t1 = new JTextField(10);
-		JTextField t21 = new JTextField(10);
-		JTextField t22 = new JTextField(10);
-		JTextField t31 = new JTextField(10);
-		JTextField t32 = new JTextField(10);
-		Font f = new Font("微软雅黑", Font.PLAIN, 12);//set font
-		tl1.setFont(f);
-		tl2.setFont(f);
-		tl3.setFont(f);
-		tr1.setFont(f);
-		tr2.setFont(f);
-		tr3.setFont(f);
-		t4.setFont(f);
-		t5.setFont(f);
-		t6.setFont(f);
-		t7.setFont(f);
-		//add interactivity event
-		tr1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d1 = new JDialog();
-				d1.setTitle("经过该站点的所有线路");
-				JTextArea a1 = new JTextArea();
-				String content = "";
-				for(String s : getAllRoutes(t1.getText())) {
-					content = content + "  " + s;
-				}
-				a1.setText(content);
-				a1.setFont(f);
-				a1.setLineWrap(true);
-				a1.setBackground(c.getBackground());
-				a1.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a1.setEditable(false);
-				d1.add(a1);
-				d1.setSize(200, 100);
-				d1.setVisible(true);
-				d1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d1.setLocationRelativeTo(null);    
-			}
-		});
-		tr2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d2 = new JDialog();
-				d2.setTitle("该线路中所有站点的顺序列表");
-				JTextArea a2 = new JTextArea(4,10);
-				String content = "";
-				ArrayList<String> sorted = getSortedStops(t21.getText() , t22.getText());
-				int i = 0;
-				for(i = 0; i <sorted.size()-1; i++) {
-					content = content  +" " + sorted.get(i) + " " + "->";
-				}
-				content = content + sorted.get(i);
-				a2.setText(content);
-				a2.setFont(f);
-				a2.setLineWrap(true);
-				a2.setBackground(c.getBackground());
-				a2.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a2.setEditable(false);
-				d2.add(a2);
-				d2.setSize(400, 200);
-				d2.setVisible(true);
-				d2.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d2.setLocationRelativeTo(null);
-			}
-		});
-		tr3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d3 = new JDialog();
-				d3.setTitle("最短路径");
-				JTextArea a3 = new JTextArea(4, 10);
-				String content = "";
-				ArrayList<String> best = getBestPath(t31.getText(), t32.getText());
-				int i = 0;
-				for(i = 0; i<best.size()-1; i++) {
-					content = content + " " + best.get(i) + " " + "->";
-				}
-				content = content + best.get(i);
-				a3.setText(content);
-				a3.setFont(f);
-				a3.setLineWrap(true);
-				a3.setBackground(c.getBackground());
-				a3.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a3.setEditable(false);
-				d3.add(a3);
-				d3.setSize(300, 150);
-				d3.setVisible(true);
-				d3.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d3.setLocationRelativeTo(null);
-			}
-		});
-		t4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d4 = new JDialog();
-				d4.setTitle("打印最短路径至标准输出");
-				JTextArea a4 = new JTextArea(4,10);
-				a4.setText(printBestPath(t31.getText(), t32.getText()));
-				a4.setFont(f);
-				a4.setLineWrap(true);
-				a4.setBackground(c.getBackground());
-				a4.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a4.setEditable(false);
-				d4.add(a4);
-				d4.setSize(300, 150);
-				d4.setVisible(true);
-				d4.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d4.setLocationRelativeTo(null);
-			}
-		});
-		t5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d5 = new JDialog();
-				d5.setTitle("路径对应的乘车费用(普通单程票)");
-				JTextArea a5 = new JTextArea(2, 5);
-				a5.setText(Double.valueOf(countPath(getBestPath(t31.getText(), t32.getText()), "UsualPay")).toString());
-				a5.setFont(f);
-				a5.setLineWrap(true);
-				a5.setBackground(c.getBackground());
-				a5.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a5.setEditable(false);
-				d5.add(a5);
-				d5.setSize(200, 100);
-				d5.setVisible(true);
-				d5.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d5.setLocationRelativeTo(null);
-			}
-		});
-		t6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d6 = new JDialog();
-				d6.setTitle("使用武汉通的乘客的票价");
-				JTextArea a6 = new JTextArea(2, 5);
-				a6.setText(Double.valueOf(countPath(getBestPath(t31.getText(),t32.getText()), "CardPay")).toString());
-				a6.setFont(f);
-				a6.setLineWrap(true);
-				a6.setBackground(c.getBackground());
-				a6.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a6.setEditable(false);
-				d6.add(a6);
-				d6.setSize(200, 100);
-				d6.setVisible(true);
-				d6.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d6.setLocationRelativeTo(null);
-			}
-		});
-		t7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JDialog d7 = new JDialog();
-				d7.setTitle("使用日票的乘客的票价");
-				JTextArea a7 = new JTextArea(2, 5);
-				a7.setText(Double.valueOf(countPath(getBestPath(t31.getText(), t32.getText()), "RegularPay")).toString());
-				a7.setFont(f);
-				a7.setLineWrap(true);
-				a7.setBackground(c.getBackground());
-				a7.setBorder(new EmptyBorder(10, 10, 10, 10));
-				a7.setEditable(false);
-				d7.add(a7);
-				d7.setSize(200, 100);
-				d7.setVisible(true);
-				d7.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				d7.setLocationRelativeTo(null);
-			}
-		});
-		p1.add(tl1);
-		p1.add(t1);
-		p1.add(tr1);
-		p2.add(tl2);
-		p2.add(t21);
-		p2.add(t22);
-		p2.add(tr2);
-		p3.add(tl3);
-		p3.add(t31);
-		p3.add(t32);
-		p3.add(tr3);
-		p4.add(t4);
-		p5.add(t5);
-		p6.add(t6);
-		p7.add(t7);
-		c.add(p1);
-		c.add(p2);
-		c.add(p3);
-		c.add(p4);
-		c.add(p5);
-		c.add(p6);
-		c.add(p7);
-		setFont(f);
-		setSize(600, 350);
-		setVisible(true);
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setLocationRelativeTo(null);         
+
 	}
 	
 	/**
@@ -578,6 +371,79 @@ public class Test extends JFrame{
 	public static void main(String[] args) {
 		Test t = new Test();
 		t.readFile();
+		System.out.println("请输入站点：");
+		Scanner scanner = new Scanner(System.in);
+
+		String target_station = scanner.nextLine();
+		System.out.println("经过该站点的多有路径为：");
+		String content = "";
+		for(String s : t.getAllRoutes(target_station)) {
+			content = content + "  " + s;
+		}
+		System.out.println(content);
+
+
+		System.out.println("请输入线路和方向（中间用空格隔开）：");
+		scanner = new Scanner(System.in);
+		String info = scanner.nextLine();
+		String xianlu = info.split(" ")[0];
+		String fangxiang = info.split(" ")[1];
+		content = "";
+		ArrayList<String> sorted = t.getSortedStops(xianlu , fangxiang);
+		int i = 0;
+		for(i = 0; i <sorted.size()-1; i++) {
+			content = content  +" " + sorted.get(i) + " " + "->";
+		}
+		for(String s : sorted){
+			System.out.println(s);
+		}
+		content = content + sorted.get(i);
+		System.out.println("该线路中所有站点的顺序列表：\n"+content);
+
+		System.out.println("请输入站点起点：");
+		scanner = new Scanner(System.in);
+		String begin = scanner.nextLine();
+		System.out.println("请输入站点终点：");
+		scanner = new Scanner(System.in);
+		String end = scanner.nextLine();
+		System.out.println("最短路径为：");
+		content = "";
+		ArrayList<String> best = t.getBestPath(begin, end);
+		i = 0;
+		for(i = 0; i<best.size()-1; i++) {
+			content = content + " " + best.get(i) + " " + "->";
+		}
+		content = content + best.get(i);
+		System.out.println(content);
+
+		System.out.println("打印最短路径至标准输出:");
+		ArrayList<String> path = t.getBestPath(begin, end);
+		String result = "乘" + t.getRouteByTwoStops(path.get(0), path.get(1)) + "[" + begin + " , ";
+		for(i = 2; i<path.size(); i++) {
+			if((!t.inSameRoute(path.get(i), path.get(i-2)))||(t.inSameRoute(path.get(i), path.get(i-2))&&!t.getRouteByTwoStops(path.get(i), path.get(i-2)).equals(path.get(i-2)))) {
+				if(!t.getRouteByTwoStops(path.get(i), path.get(i-1)).equals(t.getRouteByTwoStops(path.get(i-1), path.get(i-2)))) {
+					result = result + path.get(i-1)+"] , 换乘" + t.getRouteByTwoStops(path.get(i-1), path.get(i)) + "[" + path.get(i-1) + " , ";
+				}
+			}
+		}
+		result = result + end + "]";
+		System.out.println(result);
+
+
+		System.out.println("路径对应的乘车费用(普通单程票)");
+		System.out.println(Double.valueOf(t.countPath(t.getBestPath(begin, end), "UsualPay")).toString());
+
+
+		System.out.println("使用武汉通的乘客的票价");
+		System.out.println(Double.valueOf(t.countPath(t.getBestPath(begin,end), "CardPay")).toString());
+
+
+
+		System.out.println("使用日票的乘客的票价");
+		System.out.println(Double.valueOf(t.countPath(t.getBestPath(begin,end), "RegularPay")).toString());
+
+
+
 	}
 
 }
